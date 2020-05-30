@@ -31,4 +31,5 @@ def start_monitor():
     subprocess.call("airmon-ng start "+ interface,shell=True)
 interface_check()
 start_monitor()
+print("hello")
 #get_ssid()
