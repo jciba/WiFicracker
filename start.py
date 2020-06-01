@@ -2,10 +2,14 @@ import subprocess
 from subprocess import PIPE, Popen
 
 interface = []
-
 nic = ""
-
 ssid = ""
+monNic = ""
+
+def info():
+    print("running this software may harm your computer\n\n")
+    print("!!!Running this software may impact some processes on your computer!!!\n")
+    print("If you encounter issues please REBOOT\n")
 
 def interface_check():
     global interface
@@ -32,6 +36,9 @@ def interface_select():
     print("\n")
 
     nic = interface[w][1]
+
+    print("Using: " + nic)
+
 def get_ssid():
     global nic
     proc = Popen(["airodump-ng", nic], stdout=PIPE, stderr=PIPE)
@@ -40,12 +47,33 @@ def get_ssid():
 
 def start_monitor():
     global nic
-    proc = Popen(["airmon-ng", "check", "kill"],stdout=PIPE, stderr=PIPE)
+    proc = Popen(["sudo","-i","airmon-ng", "check","kill"],stdout=PIPE, stderr=PIPE)
+    proc.wait()
+    for line in proc.stdout:
+        print(line)
     proc.wait()
     proc.kill()
-    subprocess.call("airmon-ng start "+ nic,shell=True)
+    proc = Popen(["sudo","-i","airmon-ng", "start",nic],stdout=PIPE, stderr=PIPE)
+    proc.wait()
+    for line in proc.stdout:
+        ln = line.decode('utf8').split()
+        for x in ln:
+            print(x)
+
+    proc.kill()
+
+def stop_monitor():
+    global nic
+    global monNic
+    monNic = nic + "mon"
+    print(monNic)
+
+
+info()
 interface_check()
 interface_select()
-print("Using: " + nic)
-#start_monitor()
+start_monitor()
+
 #get_ssid()
+
+stop_monitor()
