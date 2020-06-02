@@ -47,6 +47,7 @@ def get_ssid():
 
 def start_monitor():
     global nic
+    global monNic
     proc = Popen(["sudo","-i","airmon-ng", "check","kill"],stdout=PIPE, stderr=PIPE)
     proc.wait()
     for line in proc.stdout:
@@ -61,11 +62,12 @@ def start_monitor():
             print(x)
 
     proc.kill()
+    monNic = nic + "mon"
 
 def stop_monitor():
     global nic
     global monNic
-    monNic = nic + "mon"
+    
     print(monNic)
 
 
