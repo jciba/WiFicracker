@@ -62,6 +62,7 @@ def start_monitor():
     global monNic
     
     proc = subprocess.run(["sudo","-i","airmon-ng", "start",nic],capture_output=True,text=True, timeout=20)
+    print(proc.stdout)
     print("Starting monitor mode")
           
     monNic = nic + "mon"
@@ -71,6 +72,7 @@ def stop_monitor():
     global monNic
     proc = subprocess.run(["sudo","airmon-ng", "stop",monNic],capture_output=True,text=True,timeout=20)
     print("Stopping monitor mode")
+    print(proc.stdout)
     
     
 
